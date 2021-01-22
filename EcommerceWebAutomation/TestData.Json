@@ -1,0 +1,7 @@
+{
+	"browser" : "firefox", //firefox|chrome
+	"ecommerceURL1" : "test@12#",
+	"ecommerceURL2" : "test@12#",
+	"reportsPath" : "C:\\AutomationReports",
+	"productName" : "iPhone 11"
+}
