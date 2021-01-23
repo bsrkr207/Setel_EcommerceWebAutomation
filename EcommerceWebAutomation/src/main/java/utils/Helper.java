@@ -7,13 +7,23 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.Base64;
-import java.util.concurrent.TimeUnit;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -29,8 +39,9 @@ public class Helper {
 
 	public static ExtentSparkReporter spark;
 
-	public WebDriver driver = null ;
-				
+	static WebDriver driver = null ;
+	static WebDriverWait wait;
+	
 	public WebDriver launchBrowser(String browserType, String URL) {
 		
 		switch (browserType.toLowerCase()) {
@@ -52,9 +63,9 @@ public class Helper {
 		}
 				
 		driver.get(URL);
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		
+		wait = new WebDriverWait(driver, 20);
 		return driver;
 		
 	}
@@ -180,4 +191,88 @@ public class Helper {
 	    }
 	}
 	
+	
+	//Webdriver extension methods
+	
+	public void clickOnTheElement(By element) {
+    	wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+    }
+
+    public void enterTextIntoTextbox(By element, String text) {
+    	wait.until(ExpectedConditions.elementToBeClickable(element)).sendKeys(text);
+    }
+	
+    public String getTextFromElement(By element) {
+    	return wait.until(ExpectedConditions.elementToBeClickable(element)).getText();
+    }
+
+    public String findElementAndGetText(By element) {
+    	return wait.until(ExpectedConditions.elementToBeClickable(element)).getText();
+    }
+    
+    public void clearTextFromElement(By element) {
+    	wait.until(ExpectedConditions.elementToBeClickable(element)).clear();
+    }
+
+    public void searchForIteam(By elementSearchBox, By elementSearchButton, String itemName) {
+		
+		enterTextIntoTextbox(elementSearchBox, itemName);
+		clickOnTheElement(elementSearchButton);
+	}
+    
+    public HashMap<String, Integer> getItemDetails(String websiteName, By elementSearchResults, By elementItemName, By elementItemPirce, By elementItemURL) {
+		
+		HashMap<String, Integer> resultsMap = new HashMap<String, Integer>();
+        
+		List<WebElement> SearchResults = driver.findElements(elementSearchResults);
+        
+		for (WebElement result : SearchResults) {
+            
+        	String productName;
+            
+        	int price;
+            
+        	String linkToTheProduct;
+            
+        	productName = result.findElement(elementItemName).getText();
+            
+        	try {
+                price = Integer.parseInt(result.findElement(elementItemPirce).getText().replaceAll(",", "").replaceAll("₹", ""));
+            } catch (Exception e) {
+                price = 0;
+            }
+        	
+        	linkToTheProduct = result.findElement(elementItemURL).getAttribute("href");
+            
+            resultsMap.put(websiteName + "|" + productName + "|" + linkToTheProduct, price);
+
+		}
+		return resultsMap;
+	}
+	
+    
+    public HashMap<String, Integer> sortByValue(HashMap<String, Integer> hmap) {
+        
+    	// Create a list from elements of HashMap
+        List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(hmap.entrySet());
+
+        // Sort the list
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> l1,
+                               Map.Entry<String, Integer> l2) {
+                return (l1.getValue()).compareTo(l2.getValue());
+            }
+        });
+
+        // put data from sorted list to hashmap
+        HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> aa : list) {
+            temp.put(aa.getKey(), aa.getValue());
+        }
+        
+        return temp;
+    }
+
+	
+    
 }

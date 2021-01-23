@@ -9,7 +9,9 @@ import com.google.gson.Gson;
 public class TestData {
 
 	private String browser;
+	private String ecommerceWebsite1Name;
 	private String ecommerceURL1;
+	private String ecommerceWebsite2Name;
 	private String ecommerceURL2;
 	private String reportsPath;
 	private String productName;
@@ -77,5 +79,21 @@ public class TestData {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+	public String getEcommerceWebsite1Name() {
+		return ecommerceWebsite1Name;
+	}
+
+	public void setEcommerceWebsite1Name(String ecommerceWebsite1Name) {
+		this.ecommerceWebsite1Name = ecommerceWebsite1Name;
+	}
+
+	public String getEcommerceWebsite2Name() {
+		return ecommerceWebsite2Name;
+	}
+
+	public void setEcommerceWebsite2Name(String ecommerceWebsite2Name) {
+		this.ecommerceWebsite2Name = ecommerceWebsite2Name;
 	}
 }

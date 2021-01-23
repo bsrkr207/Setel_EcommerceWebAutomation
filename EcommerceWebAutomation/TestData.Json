@@ -1,7 +1,9 @@
 {
 	"browser" : "firefox", //firefox|chrome
-	"ecommerceURL1" : "test@12#",
-	"ecommerceURL2" : "test@12#",
+	"ecommerceWebsite1Name" : "amazon",
+	"ecommerceURL1" : "https://www.amazon.in",
+	"ecommerceWebsite2Name" : "flipkart",
+	"ecommerceURL2" : "https://www.flipkart.com",
 	"reportsPath" : "C:\\AutomationReports",
 	"productName" : "iPhone 11"
 }

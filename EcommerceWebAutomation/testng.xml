@@ -3,7 +3,7 @@
 <suite name="Ecommerce Automation Assessment" parallel="false" thread-count="1">
     <test name="EcommerceAutomation">
          <classes>
-             <class name=""/>
+             <class name="testCases.EcommerceTestCases"/>
           </classes>
      </test> 
 </suite>
